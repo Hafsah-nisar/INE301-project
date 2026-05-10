@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InternMate – Skill-Based Internship Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf8f5;
+  --bg2: #f3f0eb;
+  --bg3: #ede9e2;
+  --surface: #ffffff;
+  --surface2: #f7f5f1;
+  --border: #e8e3da;
+  --border2: #d8d1c4;
+  --ink: #1a1714;
+  --ink2: #5c5349;
+  --ink3: #9b9088;
+  --amber: #d97706;
+  --amber-light: #fef3c7;
+  --amber-mid: #fde68a;
+  --amber-dark: #92400e;
+  --teal: #0d9488;
+  --teal-light: #ccfbf1;
+  --teal-mid: #99f6e4;
+  --coral: #dc5a2a;
+  --coral-light: #fff0eb;
+  --violet: #7c3aed;
+  --violet-light: #f5f3ff;
+  --rose: #e11d48;
+  --rose-light: #fff1f2;
+  --green: #16a34a;
+  --green-light: #f0fdf4;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --shadow: 0 1px 3px rgba(26,23,20,0.06), 0 4px 12px rgba(26,23,20,0.04);
+  --shadow-md: 0 4px 16px rgba(26,23,20,0.08), 0 1px 4px rgba(26,23,20,0.04);
+  --shadow-lg: 0 8px 32px rgba(26,23,20,0.12), 0 2px 8px rgba(26,23,20,0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+h1,h2,h3 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+h4,h5,h6,label,button,input,select,textarea { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(250,248,245,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 62px;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem; font-weight: 800; color: var(--amber); cursor: pointer;
+}
+.nav-logo span { color: var(--ink); }
+.nav-links { display: flex; align-items: center; gap: 2px; }
+.nav-links button {
+  background: none; border: none; color: var(--ink2);
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.875rem; font-weight: 500;
+  padding: 0.45rem 0.85rem; border-radius: 8px; cursor: pointer; transition: all 0.15s;
+}
+.nav-links button:hover { background: var(--bg2); color: var(--ink); }
+.nav-links button.active { color: var(--amber); background: var(--amber-light); font-weight: 600; }
+.nav-right { display: flex; align-items: center; gap: 0.6rem; }
+
+/* ── BUTTONS ── */
+.btn { display: inline-flex; align-items: center; gap: 0.4rem; border: none; border-radius: var(--radius); cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; transition: all 0.15s; text-decoration: none; }
+.btn-sm { padding: 0.4rem 0.9rem; font-size: 0.8rem; }
+.btn-md { padding: 0.6rem 1.4rem; font-size: 0.875rem; }
+.btn-lg { padding: 0.8rem 2rem; font-size: 0.95rem; }
+.btn-xl { padding: 1rem 2.25rem; font-size: 1rem; }
+.btn-primary { background: var(--amber); color: #fff; box-shadow: 0 1px 3px rgba(217,119,6,0.3); }
+.btn-primary:hover { background: #b45309; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(217,119,6,0.35); }
+.btn-secondary { background: var(--surface); color: var(--ink); border: 1px solid var(--border2); box-shadow: var(--shadow); }
+.btn-secondary:hover { border-color: var(--amber); color: var(--amber); }
+.btn-ghost { background: transparent; color: var(--ink2); border: 1.5px solid var(--border2); }
+.btn-ghost:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-light); }
+.btn-teal { background: var(--teal); color: #fff; }
+.btn-teal:hover { background: #0f766e; }
+.btn-outline-danger { background: var(--rose-light); color: var(--rose); border: 1px solid rgba(225,29,72,0.2); }
+.btn-outline-danger:hover { background: #ffe4e6; }
+.btn-outline-green { background: var(--green-light); color: var(--green); border: 1px solid rgba(22,163,74,0.2); }
+
+/* ── PAGES ── */
+.page { display: none; padding-top: 62px; min-height: 100vh; }
+.page.active { display: block; }
+
+/* ── CARDS ── */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow); }
+.card-hover { transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
+.card-hover:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--border2); }
+
+/* ── TAGS / BADGES ── */
+.tag { display: inline-flex; align-items: center; background: var(--bg2); border: 1px solid var(--border); color: var(--ink2); border-radius: 100px; padding: 0.2rem 0.7rem; font-size: 0.76rem; font-weight: 500; }
+.tag-amber { background: var(--amber-light); border-color: #fde68a; color: var(--amber-dark); }
+.tag-teal { background: var(--teal-light); border-color: var(--teal-mid); color: #0f766e; }
+.tag-coral { background: var(--coral-light); border-color: #fecaca; color: var(--coral); }
+.tag-violet { background: var(--violet-light); border-color: #ddd6fe; color: var(--violet); }
+.tag-green { background: var(--green-light); border-color: #bbf7d0; color: var(--green); }
+.tag-rose { background: var(--rose-light); border-color: #fecdd3; color: var(--rose); }
+
+.pill { display: inline-flex; align-items: center; gap: 0.3rem; border-radius: 100px; padding: 0.3rem 0.8rem; font-size: 0.75rem; font-weight: 600; }
+
+/* ── SECTION HEADERS ── */
+.eyebrow { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.75rem; }
+.section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: var(--ink); margin-bottom: 1rem; }
+.section-sub { color: var(--ink2); line-height: 1.75; max-width: 560px; }
+
+/* ── FORMS ── */
+.form-group { margin-bottom: 1.1rem; }
+label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--ink2); margin-bottom: 0.4rem; letter-spacing: 0.01em; }
+input, textarea, select {
+  width: 100%; background: var(--surface); border: 1.5px solid var(--border);
+  color: var(--ink); border-radius: var(--radius); padding: 0.65rem 1rem;
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.875rem;
+  transition: border-color 0.15s, box-shadow 0.15s; outline: none;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(217,119,6,0.12); }
+input::placeholder, textarea::placeholder { color: var(--ink3); }
+textarea { resize: vertical; min-height: 90px; }
+
+/* ── AVATAR ── */
+.avatar { display: flex; align-items: center; justify-content: center; border-radius: 50%; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; flex-shrink: 0; }
+.av-sm { width: 36px; height: 36px; font-size: 0.75rem; }
+.av-md { width: 44px; height: 44px; font-size: 0.85rem; }
+.av-lg { width: 58px; height: 58px; font-size: 1.1rem; }
+.av-amber { background: var(--amber-light); color: var(--amber-dark); }
+.av-teal { background: var(--teal-light); color: #0f766e; }
+.av-coral { background: var(--coral-light); color: var(--coral); }
+.av-violet { background: var(--violet-light); color: var(--violet); }
+.av-green { background: var(--green-light); color: var(--green); }
+
+/* ── PROGRESS ── */
+.progress-track { height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.fill-amber { background: var(--amber); }
+.fill-teal { background: var(--teal); }
+.fill-coral { background: var(--coral); }
+
+/* ── MATCH SCORE ── */
+.match-badge { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.25rem 0.7rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; background: var(--teal-light); color: #0f766e; border: 1px solid var(--teal-mid); }
+
+/* ── DIVIDER ── */
+hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+/* ── MODAL ── */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(26,23,20,0.4); backdrop-filter: blur(6px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 1rem; }
+.modal-backdrop.open { display: flex; }
+.modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 2rem; max-width: 580px; width: 100%; animation: scaleIn 0.2s ease; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); }
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+.modal-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; }
+.modal-close { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: none; cursor: pointer; color: var(--ink2); font-size: 1rem; display: flex; align-items: center; justify-content: center; }
+.modal-close:hover { background: var(--bg2); }
+
+/* ── TABS ── */
+.tabs { display: flex; gap: 0; background: var(--bg2); border-radius: var(--radius); padding: 4px; border: 1px solid var(--border); margin-bottom: 1.5rem; overflow-x: auto; }
+.tab { padding: 0.5rem 1rem; border-radius: 7px; border: none; background: transparent; color: var(--ink2); cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.83rem; font-weight: 500; transition: all 0.15s; white-space: nowrap; }
+.tab.active { background: var(--surface); color: var(--amber); font-weight: 700; box-shadow: var(--shadow); }
+
+/* ── SIDEBAR LAYOUT ── */
+.app-layout { display: grid; grid-template-columns: 280px 1fr; gap: 0; min-height: calc(100vh - 62px); }
+.sidebar-nav { background: var(--surface); border-right: 1px solid var(--border); padding: 2rem 1.25rem; position: sticky; top: 62px; height: calc(100vh - 62px); overflow-y: auto; }
+.sidebar-nav h4 { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin: 1.25rem 0 0.5rem; padding: 0 0.5rem; }
+.sidebar-nav h4:first-child { margin-top: 0; }
+.sidebar-link { display: flex; align-items: center; gap: 0.65rem; padding: 0.55rem 0.75rem; border-radius: 8px; color: var(--ink2); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.15s; margin-bottom: 2px; }
+.sidebar-link:hover { background: var(--bg2); color: var(--ink); }
+.sidebar-link.active { background: var(--amber-light); color: var(--amber-dark); font-weight: 600; }
+.sidebar-link .icon { font-size: 1rem; width: 20px; text-align: center; }
+.sidebar-link .badge { margin-left: auto; background: var(--amber); color: #fff; border-radius: 100px; padding: 0.1rem 0.5rem; font-size: 0.68rem; font-weight: 700; }
+.main-content { padding: 2rem; }
+
+/* ── NOTIFICATION ── */
+.notif { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.25rem; max-width: 340px; box-shadow: var(--shadow-lg); display: none; animation: slideUp 0.3s ease; }
+.notif.show { display: flex; align-items: flex-start; gap: 0.75rem; }
+.notif-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.9rem; }
+
+/* ── AI PULSE ── */
+.ai-pulse { display: inline-flex; align-items: center; gap: 0.4rem; background: linear-gradient(135deg, var(--violet-light), #ede9fe); border: 1px solid #c4b5fd; color: var(--violet); border-radius: 100px; padding: 0.25rem 0.75rem; font-size: 0.72rem; font-weight: 700; }
+.ai-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--violet); animation: pulse 1.5s infinite; }
+
+/* ── SKILL CHIP ── */
+.skill-chip { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.75rem; border-radius: 100px; font-size: 0.78rem; font-weight: 500; background: var(--bg2); border: 1px solid var(--border); color: var(--ink); }
+.skill-chip .verified { width: 14px; height: 14px; border-radius: 50%; background: var(--teal); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.6rem; flex-shrink: 0; }
+
+/* ── INTERNSHIP CARD ── */
+.intern-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem 1.4rem; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow); }
+.intern-card:hover { border-color: var(--amber); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.intern-card.applied { border-color: rgba(13,148,136,0.4); background: rgba(204,251,241,0.08); }
+.intern-card.featured { border-color: var(--amber); }
+
+/* ── COMPANY LOGO ── */
+.co-logo { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; border: 1px solid var(--border); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeInUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeInDown { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+@keyframes scaleIn { from { opacity:0; transform:scale(0.96); } to { opacity:1; transform:scale(1); } }
+@keyframes slideUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+@keyframes pulse { 0%,100% { transform:scale(1); opacity:1; } 50% { transform:scale(1.3); opacity:0.6; } }
+@keyframes shimmer { from { background-position:200% 0; } to { background-position:-200% 0; } }
+@keyframes countUp { from { opacity:0; } to { opacity:1; } }
+@keyframes float { 0%,100% { transform:translateY(0px); } 50% { transform:translateY(-6px); } }
+
+.anim-in { animation: fadeInUp 0.5s ease both; }
+.anim-delay-1 { animation-delay: 0.1s; }
+.anim-delay-2 { animation-delay: 0.2s; }
+.anim-delay-3 { animation-delay: 0.3s; }
+
+/* ── FEEDBACK SPECIFIC ── */
+.feedback-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; box-shadow: var(--shadow); }
+.feedback-score-ring { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 800; border: 3px solid; flex-shrink: 0; }
+.fb-excellent { border-color: var(--teal); color: var(--teal); background: var(--teal-light); }
+.fb-good { border-color: var(--amber); color: var(--amber); background: var(--amber-light); }
+.fb-needs-work { border-color: var(--coral); color: var(--coral); background: var(--coral-light); }
+.skill-meter-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
+.skill-meter-label { font-size: 0.8rem; color: var(--ink2); width: 110px; flex-shrink: 0; }
+.skill-meter-bar { flex: 1; height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.skill-meter-fill { height: 100%; border-radius: 3px; }
+.skill-meter-pct { font-size: 0.75rem; font-weight: 600; width: 32px; text-align: right; color: var(--ink2); }
+
+/* ── AI RECOMMENDATIONS ── */
+.ai-card { background: linear-gradient(135deg, #faf5ff 0%, #fdf4ff 100%); border: 1.5px solid #e9d5ff; border-radius: var(--radius-lg); padding: 1.25rem; box-shadow: var(--shadow); }
+.ai-reason-item { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.6rem; font-size: 0.83rem; color: var(--ink2); }
+.ai-reason-dot { width: 18px; height: 18px; border-radius: 50%; background: var(--violet-light); border: 1.5px solid #c4b5fd; color: var(--violet); font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+
+/* ── PRICING ── */
+.pricing-card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow); transition: all 0.2s; }
+.pricing-card.featured { border-color: var(--amber); background: linear-gradient(135deg, #fffbeb 0%, #fef9ee 100%); box-shadow: 0 8px 32px rgba(217,119,6,0.15); }
+.pricing-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.price-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 800; line-height: 1; }
+.price-check { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.875rem; color: var(--ink2); margin-bottom: 0.55rem; }
+.check-icon { width: 18px; height: 18px; border-radius: 50%; background: var(--teal-light); color: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.check-icon.muted { background: var(--bg2); color: var(--ink3); }
+.faq-item { border-bottom: 1px solid var(--border); padding: 1.1rem 0; cursor: pointer; }
+.faq-item:last-child { border-bottom: none; }
+.faq-q { font-weight: 600; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+.faq-a { font-size: 0.87rem; color: var(--ink2); line-height: 1.7; margin-top: 0.65rem; display: none; }
+.faq-item.open .faq-a { display: block; }
+.faq-item.open .faq-arrow { transform: rotate(180deg); }
+.faq-arrow { transition: transform 0.2s; font-size: 0.8rem; color: var(--ink3); }
+
+/* ── HERO ── */
+.hero { padding: 5rem 2rem 4rem; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; min-height: calc(100vh - 62px); }
+.hero-decorative { position: relative; }
+.hero-card-float { animation: float 4s ease-in-out infinite; }
+
+/* ── STAT BANNER ── */
+.stat-banner { background: var(--ink); color: white; padding: 2.5rem 2rem; }
+.stat-item .n { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 800; color: var(--amber); }
+.stat-item .l { font-size: 0.82rem; color: #9b9088; margin-top: 0.15rem; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink3); }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-decorative { display: none; }
+  .app-layout { grid-template-columns: 1fr; }
+  .sidebar-nav { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">Intern<span>Mate</span></div>
+  <div class="nav-links">
+    <button id="nav-home" class="active" onclick="showPage('home')">Home</button>
+    <button id="nav-browse" onclick="showPage('browse')">Find Internships</button>
+    <button id="nav-profile" onclick="showPage('profile')">My Profile</button>
+    <button id="nav-dashboard" onclick="showPage('dashboard')">Dashboard</button>
+    <button id="nav-employer" onclick="showPage('employer')">For Employers</button>
+    <button id="nav-pricing" onclick="showPage('pricing')">Pricing</button>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-sm btn-ghost" onclick="openModal('loginModal')">Log In</button>
+    <button class="btn btn-sm btn-primary" onclick="openModal('signupModal')">Get Started →</button>
+  </div>
+</nav>
+
+<!-- ═══════════════ HOME PAGE ═══════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <div class="pill tag-amber anim-in" style="margin-bottom:1.5rem;">✦ Now live across UAE & MENA</div>
+      <h1 style="font-size:clamp(2.6rem,5.5vw,4rem);margin-bottom:1.25rem;" class="anim-in anim-delay-1">
+        Land internships on<br><em style="font-style:normal;color:var(--amber);">skills,</em> not just CVs.
+      </h1>
+      <p style="font-size:1.05rem;color:var(--ink2);line-height:1.8;max-width:480px;margin-bottom:2.5rem;" class="anim-in anim-delay-2">
+        InternMate uses AI to match your real skills — projects, certificates, abilities — with the right internship roles. No experience needed to stand out.
+      </p>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;" class="anim-in anim-delay-3">
+        <button class="btn btn-xl btn-primary" onclick="showPage('browse')">Explore Internships →</button>
+        <button class="btn btn-xl btn-ghost" onclick="openModal('signupModal')">Build My Profile</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;margin-top:2rem;color:var(--ink2);font-size:0.83rem;" class="anim-in anim-delay-3">
+        <div style="display:flex;">
+          <div class="avatar av-sm av-amber" style="border:2px solid white;margin-right:-8px;">SA</div>
+          <div class="avatar av-sm av-teal" style="border:2px solid white;margin-right:-8px;">MK</div>
+          <div class="avatar av-sm av-coral" style="border:2px solid white;margin-right:-8px;">LA</div>
+          <div class="avatar av-sm av-violet" style="border:2px solid white;">AH</div>
+        </div>
+        <span><strong style="color:var(--ink);">2,400+</strong> students matched this month</span>
+      </div>
+    </div>
+    <!-- Hero visual -->
+    <div class="hero-decorative">
+      <div style="position:relative;">
+        <!-- Main AI match card -->
+        <div class="card hero-card-float" style="border-color:var(--amber);border-width:1.5px;padding:1.5rem;margin-bottom:1rem;">
+          <div class="ai-pulse" style="margin-bottom:1rem;"><div class="ai-dot"></div>AI Skill Analysis</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:0.25rem;">Ahmed Hassan</div>
+          <div style="font-size:0.82rem;color:var(--ink2);margin-bottom:1rem;">Computer Science · AUS · Final Year</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1rem;">
+            <span class="skill-chip"><span class="verified">✓</span>React.js</span>
+            <span class="skill-chip"><span class="verified">✓</span>Python</span>
+            <span class="skill-chip"><span class="verified">✓</span>SQL</span>
+            <span class="skill-chip"><span class="verified">✓</span>Figma</span>
+          </div>
+          <div class="progress-track" style="margin-bottom:0.4rem;"><div class="progress-fill fill-amber" style="width:87%;"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--ink3);">
+            <span>Profile Strength</span><span style="color:var(--amber);font-weight:600;">87%</span>
+          </div>
+        </div>
+        <!-- Match cards -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+          <div class="card" style="padding:1rem;">
+            <div style="font-size:0.72rem;color:var(--ink3);margin-bottom:0.25rem;">Top Match</div>
+            <div style="font-weight:700;font-size:0.88rem;">Careem</div>
+            <div style="font-size:0.77rem;color:var(--ink2);margin-bottom:0.5rem;">Frontend Intern</div>
+            <div class="match-badge" style="font-size:0.72rem;">⚡ 96% Match</div>
+          </div>
+          <div class="card" style="padding:1rem;">
+            <div style="font-size:0.72rem;color:var(--ink3);margin-bottom:0.25rem;">New Match</div>
+            <div style="font-weight:700;font-size:0.88rem;">G42</div>
+            <div style="font-size:0.77rem;color:var(--ink2);margin-bottom:0.5rem;">AI Research Intern</div>
+            <div class="match-badge" style="font-size:0.72rem;">⚡ 91% Match</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAT BANNER -->
+  <div class="stat-banner">
+    <div style="max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center;">
+      <div class="stat-item"><div class="n">150K+</div><div class="l">UAE Students</div></div>
+      <div class="stat-item"><div class="n">3,200+</div><div class="l">Employers</div></div>
+      <div class="stat-item"><div class="n">84%</div><div class="l">AI Match Rate</div></div>
+      <div class="stat-item"><div class="n">5 days</div><div class="l">Avg. Response Time</div></div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div style="padding:6rem 2rem;max-width:1100px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:3.5rem;">
+      <div class="eyebrow">How InternMate Works</div>
+      <h2 class="section-title">From profile to placement<br>in three steps</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;">
+      <div style="text-align:center;padding:2rem 1.5rem;">
+        <div style="width:64px;height:64px;border-radius:20px;background:var(--amber-light);border:1px solid var(--amber-mid);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:1.6rem;">🎯</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.6rem;">1. Build Skill Profile</div>
+        <p style="color:var(--ink2);font-size:0.87rem;line-height:1.7;">Add projects, certifications, and skills. Our AI verifies and scores your portfolio — no CV needed.</p>
+      </div>
+      <div style="text-align:center;padding:2rem 1.5rem;background:var(--surface);border-radius:var(--radius-xl);border:1.5px solid var(--amber);box-shadow:var(--shadow-md);">
+        <div style="width:64px;height:64px;border-radius:20px;background:var(--violet-light);border:1px solid #ddd6fe;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:1.6rem;">🤖</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.6rem;">2. Get AI Matched</div>
+        <p style="color:var(--ink2);font-size:0.87rem;line-height:1.7;">AI analyses 40+ data points and matches you to roles where you're genuinely likely to succeed — not just vaguely relevant.</p>
+      </div>
+      <div style="text-align:center;padding:2rem 1.5rem;">
+        <div style="width:64px;height:64px;border-radius:20px;background:var(--teal-light);border:1px solid var(--teal-mid);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:1.6rem;">💬</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.6rem;">3. Apply & Grow</div>
+        <p style="color:var(--ink2);font-size:0.87rem;line-height:1.7;">One-click apply with your portfolio. Even if rejected, you receive structured feedback to improve — every time.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI FEATURES SHOWCASE -->
+  <div style="background:var(--ink);padding:6rem 2rem;">
+    <div style="max-width:1100px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:3.5rem;">
+        <div style="display:inline-block;background:rgba(240,165,0,0.15);border:1px solid rgba(240,165,0,0.3);color:var(--amber);border-radius:100px;padding:0.3rem 1rem;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem;">AI-Powered</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:800;color:white;margin-bottom:1rem;">The smartest hiring engine<br>in the Middle East</h2>
+        <p style="color:#9b9088;max-width:500px;margin:0 auto;line-height:1.75;">Not keyword matching. Real understanding of what you can do and what employers actually need.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
+        <div style="background:#232220;border:1px solid #3a3733;border-radius:var(--radius-lg);padding:1.5rem;">
+          <div style="font-size:1.4rem;margin-bottom:0.75rem;">🧠</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;margin-bottom:0.5rem;">Skill Inference</div>
+          <p style="color:#9b9088;font-size:0.83rem;line-height:1.65;">AI reads your GitHub, projects, and descriptions to infer skills you didn't even list — surfacing hidden strengths to employers.</p>
+        </div>
+        <div style="background:#232220;border:1px solid #3a3733;border-radius:var(--radius-lg);padding:1.5rem;">
+          <div style="font-size:1.4rem;margin-bottom:0.75rem;">📊</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;margin-bottom:0.5rem;">Gap Analysis</div>
+          <p style="color:#9b9088;font-size:0.83rem;line-height:1.65;">Before you apply, AI shows you exactly which skills you're missing for a role and recommends courses to close the gap.</p>
+        </div>
+        <div style="background:#232220;border:1px solid #3a3733;border-radius:var(--radius-lg);padding:1.5rem;">
+          <div style="font-size:1.4rem;margin-bottom:0.75rem;">💌</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;margin-bottom:0.5rem;">Smart Cover Letter</div>
+          <p style="color:#9b9088;font-size:0.83rem;line-height:1.65;">One click generates a personalised cover letter highlighting your most relevant skills for each specific role — no generic templates.</p>
+        </div>
+        <div style="background:#232220;border:1px solid #3a3733;border-radius:var(--radius-lg);padding:1.5rem;">
+          <div style="font-size:1.4rem;margin-bottom:0.75rem;">🔮</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;margin-bottom:0.5rem;">Success Prediction</div>
+          <p style="color:#9b9088;font-size:0.83rem;line-height:1.65;">AI predicts your probability of getting shortlisted based on historical data from 50,000+ applications on the platform.</p>
+        </div>
+        <div style="background:#232220;border:1px solid #3a3733;border-radius:var(--radius-lg);padding:1.5rem;">
+          <div style="font-size:1.4rem;margin-bottom:0.75rem;">📈</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;margin-bottom:0.5rem;">Career Path Mapping</div>
+          <p style="color:#9b9088;font-size:0.83rem;line-height:1.65;">Based on your skills and interests, AI maps 3 career trajectories and tells you which internships build toward each one.</p>
+        </div>
+        <div style="background:#232220;border:1px solid #3a3733;border-radius:var(--radius-lg);padding:1.5rem;">
+          <div style="font-size:1.4rem;margin-bottom:0.75rem;">🔔</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;margin-bottom:0.5rem;">Smart Alerts</div>
+          <p style="color:#9b9088;font-size:0.83rem;line-height:1.65;">Get notified the moment a role matching 85%+ of your skills is posted — before hundreds of others see it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div style="padding:6rem 2rem;max-width:1100px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:3rem;">
+      <div class="eyebrow">Success Stories</div>
+      <h2 class="section-title">Students who made it</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
+      <div class="card card-hover">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+          <div class="avatar av-md av-teal">SA</div>
+          <div><div style="font-weight:700;font-size:0.92rem;">Sara Al-Mansoori</div><div style="color:var(--ink3);font-size:0.78rem;">Now at Google MENA 🎉</div></div>
+        </div>
+        <div style="color:var(--amber);font-size:0.85rem;margin-bottom:0.6rem;">★★★★★</div>
+        <p style="color:var(--ink2);font-size:0.87rem;line-height:1.65;">"No prior internship experience. InternMate matched me with Google based on my open-source projects. The AI gap analysis showed me exactly what to fix. Got the offer in 2 weeks."</p>
+      </div>
+      <div class="card card-hover" style="border-color:var(--amber);">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+          <div class="avatar av-md av-coral">MK</div>
+          <div><div style="font-weight:700;font-size:0.92rem;">Mohammed Khalid</div><div style="color:var(--ink3);font-size:0.78rem;">Now at Noon.com 🎉</div></div>
+        </div>
+        <div style="color:var(--amber);font-size:0.85rem;margin-bottom:0.6rem;">★★★★★</div>
+        <p style="color:var(--ink2);font-size:0.87rem;line-height:1.65;">"The AI matching is scary accurate. The cover letter generator saved me hours — and the feedback I got after a rejection actually helped me land the next role."</p>
+      </div>
+      <div class="card card-hover">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+          <div class="avatar av-md av-violet">LA</div>
+          <div><div style="font-weight:700;font-size:0.92rem;">Layla Azzam</div><div style="color:var(--ink3);font-size:0.78rem;">Now at Chalhoub Group 🎉</div></div>
+        </div>
+        <div style="color:var(--amber);font-size:0.85rem;margin-bottom:0.6rem;">★★★★★</div>
+        <p style="color:var(--ink2);font-size:0.87rem;line-height:1.65;">"Finally a platform that shows employers what I can DO. The career path map helped me realise I wanted product design, not just graphic design. 5 interviews in one week."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM CTA -->
+  <div style="background:var(--amber);padding:5rem 2rem;text-align:center;">
+    <h2 style="font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:800;color:white;margin-bottom:1rem;">Ready to get matched?</h2>
+    <p style="color:rgba(255,255,255,0.8);margin-bottom:2rem;font-size:1rem;">Join 150,000+ UAE students landing internships based on skills, not luck.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <button class="btn btn-xl" style="background:white;color:var(--amber-dark);" onclick="openModal('signupModal')">Create Free Account</button>
+      <button class="btn btn-xl" style="background:transparent;color:white;border:2px solid rgba(255,255,255,0.5);" onclick="showPage('pricing')">View Pricing →</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ BROWSE PAGE ═══════════════ -->
+<div class="page" id="page-browse">
+  <div style="display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 62px);">
+
+    <!-- Filter Sidebar -->
+    <div style="background:var(--surface);border-right:1px solid var(--border);padding:1.75rem 1.25rem;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;">
+      <div class="ai-pulse" style="margin-bottom:1.25rem;"><div class="ai-dot"></div>AI-Sorted by match</div>
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:1.25rem;">Filter Internships</h3>
+      <div class="form-group"><label>Search</label><input type="text" id="searchInput" placeholder="Role, company, skill..." oninput="filterJobs()"></div>
+      <div class="form-group"><label>Category</label>
+        <select id="catFilter" onchange="filterJobs()">
+          <option value="">All Categories</option>
+          <option>Technology</option><option>Design</option><option>Marketing</option><option>Finance</option><option>Operations</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Location</label>
+        <select id="locFilter" onchange="filterJobs()">
+          <option value="">All UAE</option>
+          <option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option><option>Remote</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Duration</label>
+        <select id="durFilter" onchange="filterJobs()">
+          <option value="">Any Duration</option>
+          <option>1-3 months</option><option>3-6 months</option><option>6+ months</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Min Match Score: <span id="matchVal" style="color:var(--amber);">0%</span></label>
+        <input type="range" min="0" max="100" value="0" id="matchFilter" oninput="filterJobs();document.getElementById('matchVal').textContent=this.value+'%'" style="padding:0;height:4px;">
+      </div>
+      <hr>
+      <div style="text-align:center;">
+        <div id="jobCount" style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:800;color:var(--amber);">12</div>
+        <div style="font-size:0.78rem;color:var(--ink3);">internships found</div>
+      </div>
+    </div>
+
+    <!-- Job List -->
+    <div style="padding:1.75rem;overflow-y:auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;">Internships For You</h2>
+        <div style="display:flex;gap:0.5rem;">
+          <button class="btn btn-sm btn-ghost" onclick="showPage('dashboard')">📊 View Applications</button>
+        </div>
+      </div>
+      <div id="jobList" style="display:flex;flex-direction:column;gap:0.9rem;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ PROFILE PAGE ═══════════════ -->
+<div class="page" id="page-profile">
+  <div style="max-width:920px;margin:0 auto;padding:2rem;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.75rem;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <h1 style="font-size:1.9rem;font-weight:800;margin-bottom:0.25rem;">My Skill Profile</h1>
+        <p style="color:var(--ink2);font-size:0.875rem;">Your portfolio is what employers see — make it count.</p>
+      </div>
+      <div style="display:flex;gap:0.5rem;">
+        <button class="btn btn-sm btn-ghost">👁 Preview as Employer</button>
+        <button class="btn btn-sm btn-primary" onclick="saveProfile()">Save Changes</button>
+      </div>
+    </div>
+
+    <!-- Strength & AI Tip -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
+      <div class="card" style="border-color:var(--amber);background:linear-gradient(135deg,#fffbeb,#fef9ee);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;">
+          <span style="font-weight:700;font-size:0.88rem;">Profile Strength</span>
+          <span id="strengthPct" style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:800;color:var(--amber);">72%</span>
+        </div>
+        <div class="progress-track" style="height:8px;margin-bottom:0.5rem;"><div class="progress-fill fill-amber" id="strengthBar" style="width:72%;"></div></div>
+        <div style="font-size:0.78rem;color:var(--ink2);">Add 2 more skills → reach 85% → 3× more employer views</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-pulse" style="margin-bottom:0.6rem;"><div class="ai-dot"></div>AI Insight</div>
+        <div style="font-size:0.84rem;color:var(--ink2);line-height:1.6;">Your React + Figma combo is rare. <strong style="color:var(--violet);">Employers at tech companies</strong> are actively searching for this combination. Add a project showing both together.</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchProfileTab(this,'tab-info')">👤 Basic Info</button>
+      <button class="tab" onclick="switchProfileTab(this,'tab-skills')">⚡ Skills</button>
+      <button class="tab" onclick="switchProfileTab(this,'tab-projects')">📁 Projects</button>
+      <button class="tab" onclick="switchProfileTab(this,'tab-certs')">🎓 Certificates</button>
+      <button class="tab" onclick="switchProfileTab(this,'tab-ai')">🤖 AI Analysis</button>
+    </div>
+
+    <!-- Tab: Basic Info -->
+    <div id="tab-info">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:1.25rem;margin-bottom:1.5rem;">
+          <div class="avatar av-lg av-amber" id="profileAvatar">AH</div>
+          <div>
+            <button class="btn btn-sm btn-ghost">Change Photo</button>
+            <div style="font-size:0.75rem;color:var(--ink3);margin-top:0.3rem;">JPG or PNG, max 2MB</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div class="form-group"><label>First Name</label><input id="firstName" value="Ahmed" oninput="updateAvatar()"></div>
+          <div class="form-group"><label>Last Name</label><input id="lastName" value="Hassan" oninput="updateAvatar()"></div>
+          <div class="form-group"><label>University</label><input value="American University of Sharjah"></div>
+          <div class="form-group"><label>Major</label><input value="Computer Science"></div>
+          <div class="form-group"><label>Graduation Year</label><select><option>2025</option><option>2026</option><option>2027</option></select></div>
+          <div class="form-group"><label>Location</label><select><option>Sharjah</option><option>Dubai</option><option>Abu Dhabi</option></select></div>
+        </div>
+        <div class="form-group"><label>Professional Summary</label><textarea>Passionate CS student with hands-on experience in full-stack development and AI/ML projects. Looking for internships where I can build real products and create meaningful impact in the MENA region.</textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div class="form-group"><label>LinkedIn URL</label><input placeholder="linkedin.com/in/username"></div>
+          <div class="form-group"><label>GitHub / Portfolio</label><input placeholder="github.com/username"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Skills -->
+    <div id="tab-skills" style="display:none;">
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+          <h3 style="font-size:1rem;font-weight:700;">Your Skills</h3>
+          <div class="ai-pulse" style="font-size:0.7rem;"><div class="ai-dot"></div>AI Verified</div>
+        </div>
+        <div id="skillsList" style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:1.25rem;min-height:40px;"></div>
+        <hr>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <input id="newSkill" placeholder="Add a skill (React, Figma, SQL...)" style="flex:1;min-width:160px;">
+          <select id="skillLevel" style="width:140px;">
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate" selected>Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+          <button class="btn btn-sm btn-primary" onclick="addSkill()">+ Add Skill</button>
+        </div>
+        <div id="aiSkillSuggestions" style="margin-top:1.25rem;">
+          <div style="font-size:0.78rem;font-weight:600;color:var(--ink2);margin-bottom:0.6rem;">🤖 AI-Recommended skills to add:</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Projects -->
+    <div id="tab-projects" style="display:none;">
+      <div id="projectList" style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1rem;"></div>
+      <button class="btn btn-md btn-ghost" style="width:100%;" onclick="openModal('addProjectModal')">+ Add Portfolio Project</button>
+    </div>
+
+    <!-- Tab: Certificates -->
+    <div id="tab-certs" style="display:none;">
+      <div id="certList" style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1rem;"></div>
+      <button class="btn btn-md btn-ghost" style="width:100%;" onclick="openModal('addCertModal')">+ Add Certificate</button>
+    </div>
+
+    <!-- Tab: AI Analysis -->
+    <div id="tab-ai" style="display:none;">
+      <div class="ai-card" style="margin-bottom:1rem;">
+        <div class="ai-pulse" style="margin-bottom:1rem;"><div class="ai-dot"></div>Full AI Profile Analysis</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:0.75rem;">Your Skill DNA</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+          <div>
+            <div style="font-size:0.8rem;font-weight:600;color:var(--ink2);margin-bottom:0.75rem;">Skill Strengths</div>
+            <div class="skill-meter-row"><div class="skill-meter-label">Frontend Dev</div><div class="skill-meter-bar"><div class="skill-meter-fill" style="width:88%;background:var(--teal);"></div></div><div class="skill-meter-pct" style="color:var(--teal);">88%</div></div>
+            <div class="skill-meter-row"><div class="skill-meter-label">UI/UX Design</div><div class="skill-meter-bar"><div class="skill-meter-fill" style="width:75%;background:var(--amber);"></div></div><div class="skill-meter-pct" style="color:var(--amber);">75%</div></div>
+            <div class="skill-meter-row"><div class="skill-meter-label">Data/Backend</div><div class="skill-meter-bar"><div class="skill-meter-fill" style="width:60%;background:var(--violet);"></div></div><div class="skill-meter-pct" style="color:var(--violet);">60%</div></div>
+            <div class="skill-meter-row"><div class="skill-meter-label">AI/ML</div><div class="skill-meter-bar"><div class="skill-meter-fill" style="width:45%;background:var(--coral);"></div></div><div class="skill-meter-pct" style="color:var(--coral);">45%</div></div>
+          </div>
+          <div>
+            <div style="font-size:0.8rem;font-weight:600;color:var(--ink2);margin-bottom:0.75rem;">Career Path Matches</div>
+            <div id="careerPaths"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:1rem;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:1rem;">📊 Skill Gap Analysis — Top Roles</h3>
+        <div id="gapAnalysis"></div>
+      </div>
+      <div class="card">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:1rem;">🎯 Personalized Next Steps</h3>
+        <div id="nextSteps"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ DASHBOARD PAGE ═══════════════ -->
+<div class="page" id="page-dashboard">
+  <div style="max-width:1100px;margin:0 auto;padding:2rem;">
+    <div style="margin-bottom:2rem;">
+      <h1 style="font-size:1.9rem;font-weight:800;">Your Dashboard</h1>
+      <p style="color:var(--ink2);font-size:0.875rem;">Track applications, AI matches, and feedback all in one place.</p>
+    </div>
+
+    <!-- Stats -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;">
+      <div class="card" style="text-align:center;padding:1.25rem;">
+        <div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:800;color:var(--amber);">12</div>
+        <div style="color:var(--ink3);font-size:0.78rem;margin-top:0.2rem;">Applications Sent</div>
+      </div>
+      <div class="card" style="text-align:center;padding:1.25rem;border-color:var(--teal);">
+        <div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:800;color:var(--teal);">3</div>
+        <div style="color:var(--ink3);font-size:0.78rem;margin-top:0.2rem;">Interviews Scheduled</div>
+      </div>
+      <div class="card" style="text-align:center;padding:1.25rem;">
+        <div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:800;color:var(--violet);">28</div>
+        <div style="color:var(--ink3);font-size:0.78rem;margin-top:0.2rem;">Profile Views</div>
+      </div>
+      <div class="card" style="text-align:center;padding:1.25rem;">
+        <div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:800;color:var(--amber);">87%</div>
+        <div style="color:var(--ink3);font-size:0.78rem;margin-top:0.2rem;">Avg Match Score</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:1.5rem;">
+      <div>
+        <!-- Application Tracker -->
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:1rem;">Application Tracker</h2>
+        <div id="appTracker" style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:2rem;"></div>
+
+        <!-- AI Recommendations -->
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:1rem;">🤖 AI Recommendations</h2>
+        <div id="aiRecos" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
+      </div>
+
+      <div>
+        <!-- Feedback Section -->
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:1rem;">📬 Employer Feedback</h2>
+        <div id="feedbackCards" style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem;"></div>
+
+        <!-- Profile Views Chart -->
+        <div class="card" style="margin-bottom:1rem;">
+          <div style="font-size:0.85rem;font-weight:700;margin-bottom:1rem;">Profile Views — Last 7 Days</div>
+          <div id="viewChart" style="display:flex;align-items:flex-end;gap:6px;height:80px;"></div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;">
+            <span style="font-size:0.65rem;color:var(--ink3);">Mon</span><span style="font-size:0.65rem;color:var(--ink3);">Tue</span><span style="font-size:0.65rem;color:var(--ink3);">Wed</span><span style="font-size:0.65rem;color:var(--ink3);">Thu</span><span style="font-size:0.65rem;color:var(--ink3);">Fri</span><span style="font-size:0.65rem;color:var(--ink3);">Sat</span><span style="font-size:0.65rem;color:var(--ink3);">Sun</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ EMPLOYER PAGE ═══════════════ -->
+<div class="page" id="page-employer">
+  <div style="max-width:1100px;margin:0 auto;padding:2rem;">
+
+    <!-- Hero -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;padding:3rem 0;margin-bottom:3rem;">
+      <div>
+        <div class="eyebrow">For Employers</div>
+        <h1 style="font-size:2.4rem;font-weight:800;line-height:1.2;margin-bottom:1.25rem;">Hire interns who can<br><em style="font-style:normal;color:var(--amber);">actually do the work</em></h1>
+        <p style="color:var(--ink2);line-height:1.75;margin-bottom:2rem;">Replace CV screening with AI-powered skill matching. See verified portfolios, ranked candidates, and close the right hire in days — not weeks.</p>
+        <div style="display:flex;gap:0.75rem;">
+          <button class="btn btn-lg btn-primary" onclick="openModal('empSignupModal')">Post a Role Free →</button>
+          <button class="btn btn-lg btn-ghost" onclick="showPage('pricing')">View Plans</button>
+        </div>
+      </div>
+      <!-- Employer Dashboard Preview -->
+      <div class="card" style="padding:1.5rem;border-color:var(--amber);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+          <span style="font-weight:700;font-size:0.88rem;">AI-Ranked Applicants</span>
+          <div class="ai-pulse" style="font-size:0.68rem;"><div class="ai-dot"></div>Live</div>
+        </div>
+        <div id="empCandidates"></div>
+      </div>
+    </div>
+
+    <!-- Employer Features -->
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:1.5rem;">Everything in the Employer Dashboard</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:3rem;">
+      <div class="card card-hover"><div style="font-size:1.4rem;margin-bottom:0.6rem;">🎯</div><h3 style="font-size:0.95rem;font-weight:700;margin-bottom:0.4rem;">AI Shortlisting</h3><p style="color:var(--ink2);font-size:0.83rem;line-height:1.6;">AI pre-ranks all applicants — you see only the top 10 with detailed match breakdowns. Cut screening time by 80%.</p></div>
+      <div class="card card-hover"><div style="font-size:1.4rem;margin-bottom:0.6rem;">📊</div><h3 style="font-size:0.95rem;font-weight:700;margin-bottom:0.4rem;">Skill-by-Skill Comparison</h3><p style="color:var(--ink2);font-size:0.83rem;line-height:1.6;">Side-by-side view of candidates' verified skills, project quality, and certification scores.</p></div>
+      <div class="card card-hover"><div style="font-size:1.4rem;margin-bottom:0.6rem;">💌</div><h3 style="font-size:0.95rem;font-weight:700;margin-bottom:0.4rem;">Structured Feedback System</h3><p style="color:var(--ink2);font-size:0.83rem;line-height:1.6;">Send rich, score-based feedback to every rejected candidate in one click. Build your employer brand effortlessly.</p></div>
+      <div class="card card-hover"><div style="font-size:1.4rem;margin-bottom:0.6rem;">🔮</div><h3 style="font-size:0.95rem;font-weight:700;margin-bottom:0.4rem;">Retention Prediction</h3><p style="color:var(--ink2);font-size:0.83rem;line-height:1.6;">AI predicts how likely a candidate is to complete the full internship based on profile signals and past data.</p></div>
+      <div class="card card-hover"><div style="font-size:1.4rem;margin-bottom:0.6rem;">📬</div><h3 style="font-size:0.95rem;font-weight:700;margin-bottom:0.4rem;">Instant Outreach</h3><p style="color:var(--ink2);font-size:0.83rem;line-height:1.6;">Message top candidates directly. AI drafts personalised outreach messages for each candidate's background.</p></div>
+      <div class="card card-hover"><div style="font-size:1.4rem;margin-bottom:0.6rem;">📈</div><h3 style="font-size:0.95rem;font-weight:700;margin-bottom:0.4rem;">Hiring Analytics</h3><p style="color:var(--ink2);font-size:0.83rem;line-height:1.6;">Track time-to-hire, response rates, skills demand trends, and your employer brand score across the platform.</p></div>
+    </div>
+
+    <!-- Feedback UI Demo -->
+    <div class="card" style="margin-bottom:2rem;border-color:var(--teal);">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:0.5rem;">💌 The Feedback System — How it Works</h3>
+      <p style="color:var(--ink2);font-size:0.85rem;margin-bottom:1.25rem;">When you reject a candidate, InternMate prompts you to send structured feedback. Takes 30 seconds. Builds your employer reputation.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div>
+          <div style="font-size:0.78rem;font-weight:600;color:var(--ink2);margin-bottom:0.75rem;">Score the candidate on:</div>
+          <div id="empFeedbackForm"></div>
+        </div>
+        <div>
+          <div style="font-size:0.78rem;font-weight:600;color:var(--ink2);margin-bottom:0.75rem;">What the student receives:</div>
+          <div id="empFeedbackPreview"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Post Job Form -->
+    <div class="card">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:1.25rem;">Post an Internship Role</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div class="form-group"><label>Company Name</label><input placeholder="e.g. Noon.com"></div>
+        <div class="form-group"><label>Role Title</label><input placeholder="e.g. Frontend Developer Intern"></div>
+        <div class="form-group"><label>Location</label><select><option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option><option>Remote</option></select></div>
+        <div class="form-group"><label>Duration</label><select><option>1-3 months</option><option>3-6 months</option><option>6+ months</option></select></div>
+        <div class="form-group"><label>Category</label><select><option>Technology</option><option>Design</option><option>Marketing</option><option>Finance</option></select></div>
+        <div class="form-group"><label>Stipend (AED/month)</label><input type="number" placeholder="e.g. 3000"></div>
+      </div>
+      <div class="form-group"><label>Role Description</label><textarea placeholder="Describe the role, responsibilities, and what the intern will learn..."></textarea></div>
+      <div class="form-group"><label>Required Skills (comma separated)</label><input placeholder="React, TypeScript, Git, REST APIs..."></div>
+      <div class="form-group"><label>Nice-to-Have Skills (optional)</label><input placeholder="GraphQL, Docker, Figma..."></div>
+      <button class="btn btn-md btn-primary" onclick="postJob()">Post Internship Role →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ PRICING PAGE ═══════════════ -->
+<div class="page" id="page-pricing">
+
+  <!-- Header -->
+  <div style="text-align:center;padding:5rem 2rem 3rem;">
+    <div class="eyebrow">Pricing</div>
+    <h1 style="font-size:clamp(2.2rem,5vw,3.2rem);font-weight:800;margin-bottom:1rem;">Simple, transparent pricing</h1>
+    <p style="color:var(--ink2);max-width:500px;margin:0 auto 2rem;line-height:1.75;">Start free, upgrade when you're ready. No hidden fees. No credit card to get started.</p>
+    <!-- Toggle -->
+    <div style="display:inline-flex;background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:4px;gap:0;">
+      <button id="toggleMonthly" class="btn btn-sm" style="border-radius:100px;background:var(--surface);box-shadow:var(--shadow);" onclick="setPricingPeriod('monthly')">Monthly</button>
+      <button id="toggleAnnual" class="btn btn-sm" style="border-radius:100px;background:transparent;box-shadow:none;" onclick="setPricingPeriod('annual')">Annual <span class="pill tag-teal" style="font-size:0.65rem;padding:0.15rem 0.5rem;margin-left:4px;">-25%</span></button>
+    </div>
+  </div>
+
+  <!-- Student Pricing -->
+  <div style="max-width:1100px;margin:0 auto;padding:0 2rem 4rem;">
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem;text-align:center;color:var(--ink2);">For Students</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:5rem;">
+
+      <!-- Free -->
+      <div class="pricing-card">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.75rem;">Free</div>
+        <div class="price-num" style="color:var(--ink);">AED 0</div>
+        <div style="color:var(--ink3);font-size:0.82rem;margin-bottom:1.5rem;margin-top:0.25rem;">Forever free</div>
+        <button class="btn btn-md btn-ghost" style="width:100%;margin-bottom:1.5rem;" onclick="openModal('signupModal')">Get Started Free</button>
+        <div>
+          <div class="price-check"><div class="check-icon">✓</div>Skill profile (up to 5 skills)</div>
+          <div class="price-check"><div class="check-icon">✓</div>Browse all internships</div>
+          <div class="price-check"><div class="check-icon">✓</div>5 applications/month</div>
+          <div class="price-check"><div class="check-icon">✓</div>Basic AI match score</div>
+          <div class="price-check"><div class="check-icon muted">✕</div><span style="color:var(--ink3);">AI gap analysis</span></div>
+          <div class="price-check"><div class="check-icon muted">✕</div><span style="color:var(--ink3);">Smart cover letters</span></div>
+          <div class="price-check"><div class="check-icon muted">✕</div><span style="color:var(--ink3);">Career path mapping</span></div>
+          <div class="price-check"><div class="check-icon muted">✕</div><span style="color:var(--ink3);">Priority matching</span></div>
+        </div>
+      </div>
+
+      <!-- Pro (Featured) -->
+      <div class="pricing-card featured">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber-dark);">Pro</div>
+          <span class="pill tag-amber" style="font-size:0.65rem;padding:0.2rem 0.65rem;">Most Popular</span>
+        </div>
+        <div class="price-num" style="color:var(--amber);" id="proPriceMonthly">AED 49</div>
+        <div style="color:var(--ink2);font-size:0.82rem;margin-bottom:1.5rem;margin-top:0.25rem;" id="proPriceSub">per month</div>
+        <button class="btn btn-md btn-primary" style="width:100%;margin-bottom:1.5rem;" onclick="openModal('signupModal')">Start Pro Free Trial →</button>
+        <div>
+          <div class="price-check"><div class="check-icon">✓</div><strong>Unlimited</strong> skills & projects</div>
+          <div class="price-check"><div class="check-icon">✓</div><strong>Unlimited</strong> applications</div>
+          <div class="price-check"><div class="check-icon">✓</div>Full AI match analysis</div>
+          <div class="price-check"><div class="check-icon">✓</div>AI skill gap analysis</div>
+          <div class="price-check"><div class="check-icon">✓</div>Smart cover letter generator</div>
+          <div class="price-check"><div class="check-icon">✓</div>Career path mapping (3 paths)</div>
+          <div class="price-check"><div class="check-icon">✓</div>Priority in employer search</div>
+          <div class="price-check"><div class="check-icon">✓</div>Early access to new roles</div>
+        </div>
+      </div>
+
+      <!-- Elite -->
+      <div class="pricing-card" style="border-color:var(--violet);">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:0.75rem;">Elite</div>
+        <div class="price-num" style="color:var(--violet);" id="elitePriceMonthly">AED 99</div>
+        <div style="color:var(--ink2);font-size:0.82rem;margin-bottom:1.5rem;margin-top:0.25rem;" id="elitePriceSub">per month</div>
+        <button class="btn btn-md" style="width:100%;margin-bottom:1.5rem;background:var(--violet);color:white;" onclick="openModal('signupModal')">Start Elite Trial →</button>
+        <div>
+          <div class="price-check"><div class="check-icon" style="background:var(--violet-light);color:var(--violet);">✓</div>Everything in Pro</div>
+          <div class="price-check"><div class="check-icon" style="background:var(--violet-light);color:var(--violet);">✓</div>1-on-1 career coaching call/month</div>
+          <div class="price-check"><div class="check-icon" style="background:var(--violet-light);color:var(--violet);">✓</div>CV + LinkedIn review</div>
+          <div class="price-check"><div class="check-icon" style="background:var(--violet-light);color:var(--violet);">✓</div>Mock interview (AI + human)</div>
+          <div class="price-check"><div class="check-icon" style="background:var(--violet-light);color:var(--violet);">✓</div>Guaranteed employer intros (2/mo)</div>
+          <div class="price-check"><div class="check-icon" style="background:var(--violet-light);color:var(--violet);">✓</div>Dedicated success manager</div>
+          <div class="price-check"><div class="check-icon" style="background:var(--violet-light);color:var(--violet);">✓</div>Success prediction model</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employer Pricing -->
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem;text-align:center;color:var(--ink2);">For Employers</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:4rem;">
+      <div class="pricing-card">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.75rem;">Starter</div>
+        <div class="price-num" style="color:var(--ink);">AED 0</div>
+        <div style="color:var(--ink3);font-size:0.82rem;margin-bottom:1.5rem;margin-top:0.25rem;">3 free postings</div>
+        <button class="btn btn-md btn-ghost" style="width:100%;margin-bottom:1.5rem;" onclick="openModal('empSignupModal')">Start Posting Free</button>
+        <div>
+          <div class="price-check"><div class="check-icon">✓</div>3 active job postings</div>
+          <div class="price-check"><div class="check-icon">✓</div>Basic candidate profiles</div>
+          <div class="price-check"><div class="check-icon">✓</div>AI-ranked shortlist (top 5)</div>
+          <div class="price-check"><div class="check-icon muted">✕</div><span style="color:var(--ink3);">Feedback system</span></div>
+          <div class="price-check"><div class="check-icon muted">✕</div><span style="color:var(--ink3);">Direct candidate outreach</span></div>
+        </div>
+      </div>
+      <div class="pricing-card featured">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber-dark);">Business</div>
+          <span class="pill tag-amber" style="font-size:0.65rem;padding:0.2rem 0.65rem;">Best Value</span>
+        </div>
+        <div class="price-num" style="color:var(--amber);" id="bizPriceMonthly">AED 599</div>
+        <div style="color:var(--ink2);font-size:0.82rem;margin-bottom:1.5rem;margin-top:0.25rem;" id="bizPriceSub">per month</div>
+        <button class="btn btn-md btn-primary" style="width:100%;margin-bottom:1.5rem;" onclick="openModal('empSignupModal')">Start Free Trial →</button>
+        <div>
+          <div class="price-check"><div class="check-icon">✓</div>Unlimited job postings</div>
+          <div class="price-check"><div class="check-icon">✓</div>Full candidate profiles + portfolios</div>
+          <div class="price-check"><div class="check-icon">✓</div>AI shortlisting (top 10)</div>
+          <div class="price-check"><div class="check-icon">✓</div>Structured feedback system</div>
+          <div class="price-check"><div class="check-icon">✓</div>Direct messaging (50 msgs/mo)</div>
+          <div class="price-check"><div class="check-icon">✓</div>Hiring analytics dashboard</div>
+          <div class="price-check"><div class="check-icon">✓</div>Employer brand page</div>
+        </div>
+      </div>
+      <div class="pricing-card" style="border-color:var(--ink);">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);margin-bottom:0.75rem;">Enterprise</div>
+        <div class="price-num" style="color:var(--ink);">Custom</div>
+        <div style="color:var(--ink3);font-size:0.82rem;margin-bottom:1.5rem;margin-top:0.25rem;">Volume pricing</div>
+        <button class="btn btn-md btn-secondary" style="width:100%;margin-bottom:1.5rem;" onclick="notify('Enterprise','Our team will contact you within 24 hours.','info')">Talk to Sales →</button>
+        <div>
+          <div class="price-check"><div class="check-icon">✓</div>Everything in Business</div>
+          <div class="price-check"><div class="check-icon">✓</div>Dedicated account manager</div>
+          <div class="price-check"><div class="check-icon">✓</div>Custom AI matching criteria</div>
+          <div class="price-check"><div class="check-icon">✓</div>ATS integration</div>
+          <div class="price-check"><div class="check-icon">✓</div>Bulk hiring campaigns</div>
+          <div class="price-check"><div class="check-icon">✓</div>Priority support (SLA)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Company logos trust bar -->
+    <div style="text-align:center;margin-bottom:4rem;">
+      <div style="font-size:0.78rem;color:var(--ink3);margin-bottom:1.25rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;">Trusted by leading UAE employers</div>
+      <div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:1.5rem;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.5rem 1.25rem;font-weight:700;font-size:0.85rem;color:var(--ink2);">Careem</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.5rem 1.25rem;font-weight:700;font-size:0.85rem;color:var(--ink2);">Noon.com</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.5rem 1.25rem;font-weight:700;font-size:0.85rem;color:var(--ink2);">G42</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.5rem 1.25rem;font-weight:700;font-size:0.85rem;color:var(--ink2);">ADNOC</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.5rem 1.25rem;font-weight:700;font-size:0.85rem;color:var(--ink2);">Chalhoub Group</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.5rem 1.25rem;font-weight:700;font-size:0.85rem;color:var(--ink2);">Property Finder</div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div style="max-width:680px;margin:0 auto;">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;text-align:center;margin-bottom:2rem;">Frequently Asked Questions</h2>
+      <div id="faqList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ MODALS ═══════════════ -->
+
+<!-- Login -->
+<div class="modal-backdrop" id="loginModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Welcome back</div><button class="modal-close" onclick="closeModal('loginModal')">✕</button></div>
+    <div class="form-group"><label>Email</label><input type="email" placeholder="you@student.ac.ae"></div>
+    <div class="form-group"><label>Password</label><input type="password" placeholder="••••••••"></div>
+    <button class="btn btn-md btn-primary" style="width:100%;margin-bottom:1rem;" onclick="handleLogin()">Log In</button>
+    <div style="text-align:center;font-size:0.83rem;color:var(--ink2);">No account? <a href="#" style="color:var(--amber);font-weight:600;" onclick="closeModal('loginModal');openModal('signupModal')">Sign up free</a></div>
+  </div>
+</div>
+
+<!-- Signup -->
+<div class="modal-backdrop" id="signupModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Create your account</div><button class="modal-close" onclick="closeModal('signupModal')">✕</button></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+      <div class="form-group"><label>First Name</label><input placeholder="Ahmed"></div>
+      <div class="form-group"><label>Last Name</label><input placeholder="Hassan"></div>
+    </div>
+    <div class="form-group"><label>Email</label><input type="email" placeholder="you@student.ac.ae"></div>
+    <div class="form-group"><label>University</label><input placeholder="e.g. American University of Sharjah"></div>
+    <div class="form-group"><label>Password</label><input type="password" placeholder="Min 8 characters"></div>
+    <button class="btn btn-md btn-primary" style="width:100%;margin-bottom:1rem;" onclick="handleSignup()">Create Free Account →</button>
+    <div style="text-align:center;font-size:0.83rem;color:var(--ink2);">Already have an account? <a href="#" style="color:var(--amber);font-weight:600;" onclick="closeModal('signupModal');openModal('loginModal')">Log in</a></div>
+  </div>
+</div>
+
+<!-- Employer Signup -->
+<div class="modal-backdrop" id="empSignupModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Create Employer Account</div><button class="modal-close" onclick="closeModal('empSignupModal')">✕</button></div>
+    <div class="form-group"><label>Company Name</label><input placeholder="e.g. Noon.com"></div>
+    <div class="form-group"><label>Your Name</label><input placeholder="HR Manager / Founder"></div>
+    <div class="form-group"><label>Work Email</label><input type="email" placeholder="you@company.com"></div>
+    <div class="form-group"><label>Industry</label><select><option>Technology</option><option>Finance</option><option>Retail</option><option>Healthcare</option><option>Media</option></select></div>
+    <button class="btn btn-md btn-primary" style="width:100%;" onclick="handleEmpSignup()">Create Employer Account →</button>
+  </div>
+</div>
+
+<!-- Apply -->
+<div class="modal-backdrop" id="applyModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title" id="applyTitle">Apply for Role</div><button class="modal-close" onclick="closeModal('applyModal')">✕</button></div>
+    <div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:var(--radius);padding:1rem;margin-bottom:1.25rem;">
+      <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem;"><span id="applyMatchPct" class="match-badge">⚡ 96% Match</span></div>
+      <div style="font-size:0.82rem;color:var(--ink2);" id="applyMatchText">Your skills match 9 of 10 requirements for this role.</div>
+    </div>
+    <!-- Gap warning if any -->
+    <div id="applyGapWarning" style="display:none;background:var(--amber-light);border:1px solid var(--amber-mid);border-radius:var(--radius);padding:0.9rem;margin-bottom:1.25rem;font-size:0.82rem;color:var(--amber-dark);"></div>
+    <div style="margin-bottom:1.25rem;">
+      <div style="font-size:0.78rem;font-weight:600;color:var(--ink2);margin-bottom:0.5rem;">Skills from your profile being shared:</div>
+      <div id="applySkills" style="display:flex;flex-wrap:wrap;gap:0.4rem;"></div>
+    </div>
+    <div class="form-group"><label>Why do you want this role? <span style="font-weight:400;color:var(--ink3);">(optional)</span></label><textarea placeholder="What excites you about this opportunity..."></textarea></div>
+    <div style="display:flex;gap:0.75rem;">
+      <button class="btn btn-md btn-primary" style="flex:1;" onclick="submitApplication()">Submit Application →</button>
+      <button class="btn btn-md btn-ghost" onclick="closeModal('applyModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Project -->
+<div class="modal-backdrop" id="addProjectModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Add Portfolio Project</div><button class="modal-close" onclick="closeModal('addProjectModal')">✕</button></div>
+    <div class="form-group"><label>Project Name</label><input id="pName" placeholder="e.g. E-commerce Dashboard"></div>
+    <div class="form-group"><label>Description</label><textarea id="pDesc" placeholder="What did you build? What problem did it solve? What was your impact?"></textarea></div>
+    <div class="form-group"><label>Skills Used <span style="font-weight:400;color:var(--ink3);">(comma separated)</span></label><input id="pSkills" placeholder="React, Node.js, MongoDB..."></div>
+    <div class="form-group"><label>Project URL <span style="font-weight:400;color:var(--ink3);">(optional)</span></label><input id="pUrl" placeholder="github.com/yourrepo or deployed link"></div>
+    <button class="btn btn-md btn-primary" style="width:100%;" onclick="addProject()">Add Project →</button>
+  </div>
+</div>
+
+<!-- Add Cert -->
+<div class="modal-backdrop" id="addCertModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Add Certificate</div><button class="modal-close" onclick="closeModal('addCertModal')">✕</button></div>
+    <div class="form-group"><label>Certificate Name</label><input id="certName" placeholder="e.g. AWS Cloud Practitioner"></div>
+    <div class="form-group"><label>Issuer</label><input id="certIssuer" placeholder="e.g. Amazon Web Services"></div>
+    <div class="form-group"><label>Date Issued</label><input type="month" id="certDate"></div>
+    <button class="btn btn-md btn-primary" style="width:100%;" onclick="addCert()">Add Certificate →</button>
+  </div>
+</div>
+
+<!-- Job Detail -->
+<div class="modal-backdrop" id="jobDetailModal">
+  <div class="modal" style="max-width:660px;">
+    <div class="modal-header"><div class="modal-title" id="jdTitle">Role</div><button class="modal-close" onclick="closeModal('jobDetailModal')">✕</button></div>
+    <div id="jdBody"></div>
+  </div>
+</div>
+
+<!-- Notification -->
+<div class="notif" id="notif">
+  <div class="notif-icon" id="notifIcon" style="background:var(--green-light);color:var(--green);">✓</div>
+  <div><div style="font-weight:700;font-size:0.87rem;" id="notifTitle">Done!</div><div style="color:var(--ink2);font-size:0.8rem;margin-top:0.15rem;" id="notifMsg"></div></div>
+</div>
+
+<script>
+// ═══════════ DATA ═══════════
+const JOBS = [
+  { id:1, title:'Frontend Developer Intern', company:'Careem', logo:'CA', lc:'av-teal', cat:'Technology', loc:'Dubai', dur:'3-6 months', match:96, pay:4000, skills:['React.js','TypeScript','CSS','Git'], desc:'Work on Careem\'s consumer-facing web apps. Own features end-to-end — from design reviews with our product team through to deployment and monitoring in production.', featured:true, applied:false },
+  { id:2, title:'Data Science Intern', company:'Noon.com', logo:'N', lc:'av-amber', cat:'Technology', loc:'Dubai', dur:'3-6 months', match:91, pay:3500, skills:['Python','SQL','Pandas','ML'], desc:'Analyse millions of daily transactions, build recommendation models, and present insights directly to senior leadership every week.', featured:false, applied:false },
+  { id:3, title:'UX Design Intern', company:'Chalhoub Group', logo:'CG', lc:'av-coral', cat:'Design', loc:'Dubai', dur:'1-3 months', match:88, pay:3000, skills:['Figma','User Research','Prototyping','Adobe XD'], desc:'Design experiences for luxury retail customers across the MENA region. You\'ll run user research sessions and ship designs to a team of 20+ engineers.', featured:false, applied:false },
+  { id:4, title:'Marketing Intern', company:'Majid Al Futtaim', logo:'MA', lc:'av-violet', cat:'Marketing', loc:'Sharjah', dur:'3-6 months', match:82, pay:2800, skills:['Social Media','Copywriting','Analytics','Canva'], desc:'Run campaigns across UAE\'s leading retail brand. Own social media strategy, content creation, and report on performance weekly to the Head of Marketing.', featured:false, applied:false },
+  { id:5, title:'Backend Developer Intern', company:'Fetchr', logo:'FE', lc:'av-teal', cat:'Technology', loc:'Dubai', dur:'6+ months', match:79, pay:3200, skills:['Node.js','MongoDB','REST APIs','Docker'], desc:'Build scalable APIs powering last-mile delivery across MENA. Work with senior engineers on high-throughput, mission-critical systems.', featured:false, applied:false },
+  { id:6, title:'Finance Analyst Intern', company:'ADNOC', logo:'AD', lc:'av-amber', cat:'Finance', loc:'Abu Dhabi', dur:'3-6 months', match:74, pay:5000, skills:['Excel','Financial Modelling','PowerBI','Python'], desc:'Support the corporate finance team on major capital allocation decisions. Exposure to billion-dollar project analysis — rare for an intern.', featured:false, applied:false },
+  { id:7, title:'AI Research Intern', company:'G42', logo:'G4', lc:'av-violet', cat:'Technology', loc:'Abu Dhabi', dur:'6+ months', match:88, pay:6000, skills:['Python','PyTorch','ML Research','LLMs'], desc:'Work on frontier AI at one of the world\'s most advanced AI labs. Research publication opportunities available. Access to cutting-edge compute infrastructure.', featured:true, applied:false },
+  { id:8, title:'Product Management Intern', company:'Property Finder', logo:'PF', lc:'av-coral', cat:'Technology', loc:'Dubai', dur:'3-6 months', match:85, pay:3800, skills:['Product Strategy','Figma','SQL','Analytics'], desc:'Own a feature from discovery to launch on UAE\'s largest property platform. Direct exposure to the product lifecycle with a senior PM mentor.', featured:false, applied:false },
+  { id:9, title:'Content & SEO Intern', company:'Dubizzle', logo:'DU', lc:'av-teal', cat:'Marketing', loc:'Remote', dur:'1-3 months', match:71, pay:2000, skills:['SEO','Copywriting','WordPress','Analytics'], desc:'Create content driving millions of monthly searches. Own a content vertical end-to-end and learn growth strategies from a team that scaled to 10M users.', featured:false, applied:false },
+  { id:10, title:'Operations Intern', company:'Aramex', logo:'AR', lc:'av-amber', cat:'Operations', loc:'Sharjah', dur:'1-3 months', match:68, pay:2500, skills:['Logistics','Excel','Process Improvement'], desc:'Optimise supply chain operations across MENA. Direct exposure to the Head of Operations and involvement in live efficiency projects.', featured:false, applied:false },
+  { id:11, title:'Graphic Design Intern', company:'OSN+', logo:'OS', lc:'av-coral', cat:'Design', loc:'Dubai', dur:'3-6 months', match:77, pay:2800, skills:['Illustrator','Photoshop','Motion Design','Figma'], desc:'Create visual assets for the Middle East\'s leading streaming platform. High-impact creative work seen by millions of users across the region.', featured:false, applied:false },
+  { id:12, title:'Business Development Intern', company:'Tabby', logo:'TB', lc:'av-violet', cat:'Finance', loc:'Dubai', dur:'3-6 months', match:80, pay:3200, skills:['Sales','Excel','Research','CRM'], desc:'Join the fastest-growing BNPL company in MENA. Work with enterprise clients and close real partnership deals. High-autonomy role.', featured:false, applied:false },
+];
+
+const APPS = [
+  { company:'Careem', role:'Frontend Developer Intern', status:'interview', date:'3 days ago', match:96, logo:'CA', lc:'av-teal' },
+  { company:'Noon.com', role:'Data Science Intern', status:'reviewing', date:'5 days ago', match:91, logo:'N', lc:'av-amber' },
+  { company:'Chalhoub Group', role:'UX Design Intern', status:'rejected', date:'1 week ago', match:88, logo:'CG', lc:'av-coral' },
+  { company:'G42', role:'AI Research Intern', status:'applied', date:'Today', match:88, logo:'G4', lc:'av-violet' },
+];
+
+const FEEDBACK_DATA = [
+  {
+    company:'Chalhoub Group', role:'UX Design Intern', result:'Not Selected',
+    scores:{ 'Portfolio Quality':72, 'Relevant Experience':45, 'Communication':80, 'Technical Skill':68, 'Cultural Fit':75 },
+    strengths:['Strong Figma proficiency','Good visual design taste','Clear project documentation'],
+    improvements:['Need deeper enterprise-scale design system experience','No evidence of user testing or research methods','Portfolio lacks e-commerce case studies'],
+    note:'Ahmed showed genuine promise in visual design. We recommend building experience with design systems (try contributing to open source) before reapplying.',
+    coach_tip:'Take the Google UX Design Certificate (free for UAE students via ADQ). Add 1 user research case study to your portfolio.',
+    logo:'CG', lc:'av-coral', ftype:'detailed'
+  },
+  {
+    company:'Property Finder', role:'Product Manager Intern', result:'Not Selected',
+    scores:{ 'SQL/Analytics':82, 'Product Thinking':60, 'A/B Testing Knowledge':35, 'Stakeholder Comm.':70, 'Research Skills':65 },
+    strengths:['Excellent data skills','Good problem framing'],
+    improvements:['No A/B testing framework experience','Product decisions lacked data-driven reasoning','Limited knowledge of metrics-led product development'],
+    note:'Strong analytical base — we saw real potential. The gap is in product experimentation methodology.',
+    coach_tip:'Read "Inspired" by Marty Cagan. Take the Reforge Product Analytics course. Document an A/B test you run on a personal project.',
+    logo:'PF', lc:'av-coral', ftype:'detailed'
+  }
+];
+
+const AI_RECOS = [
+  { match:94, job:7, reason:'Your Python + ML skills align perfectly. G42 matched 9/10 of your skills. Only gap: no LLM fine-tuning experience.', urgency:'🔴 Only 3 spots left' },
+  { match:89, job:1, reason:'Your React.js is rated "Advanced". Careem\'s team uses the same stack. Your portfolio project directly demonstrates the required skills.', urgency:'🟡 Closes in 5 days' },
+  { match:85, job:8, reason:'Property Finder wants Product + Design crossover — your Figma + SQL combo is exactly what they described.', urgency:'🟢 14 days left' },
+];
+
+const CAREER_PATHS = [
+  { title:'Product Engineer', match:'91%', desc:'React + Figma + SQL combo is ideal', color:'var(--teal)' },
+  { title:'AI/ML Engineer', match:'72%', desc:'Add PyTorch & ML projects to close gap', color:'var(--violet)' },
+  { title:'UX Designer', match:'68%', desc:'Strengthen user research skills', color:'var(--coral)' },
+];
+
+const GAP_ANALYSIS = [
+  { role:'Frontend Dev Intern @ Careem', match:96, gaps:[], strong:['React.js','TypeScript','CSS'] },
+  { role:'AI Research Intern @ G42', match:88, gaps:['LLM Fine-tuning','PyTorch'], strong:['Python','Machine Learning'] },
+  { role:'PM Intern @ Property Finder', match:85, gaps:['A/B Testing','Product Metrics'], strong:['SQL','Figma'] },
+];
+
+const NEXT_STEPS = [
+  { icon:'📚', title:'Complete PyTorch Basics', desc:'Free course on fast.ai — 8 hours. Unlocks 4 new AI role matches.', tag:'High Impact', tagClass:'tag-violet' },
+  { icon:'🔨', title:'Add React + Figma Project', desc:'Build one project combining both skills — Careem and Property Finder both filter for this.', tag:'Quick Win', tagClass:'tag-teal' },
+  { icon:'📄', title:'Add 1 User Research Case Study', desc:'Chalhoub Group and other design firms specifically search for research experience.', tag:'Unlock Design Roles', tagClass:'tag-amber' },
+];
+
+const FAQS = [
+  { q:'Is InternMate really free for students?', a:'Yes — the Free plan is permanently free with no credit card required. You can browse all internships, apply to 5 per month, and see basic AI match scores. Upgrade to Pro or Elite to unlock unlimited applications, AI analysis tools, and priority matching.' },
+  { q:'How does the AI matching actually work?', a:'Our AI analyses your skills, project descriptions, certifications, and GitHub activity across 40+ signals. It compares this against each role\'s requirements (not just keywords — semantic understanding) and generates a match score with detailed reasoning. It updates every time you add something to your profile.' },
+  { q:'What is the AI skill gap analysis?', a:'When you view a role, Pro+ users see exactly which skills they\'re missing and their relative importance. We also suggest the fastest path to fill each gap (specific courses, projects, or certifications) so you know exactly what to do next.' },
+  { q:'Do employers see my full profile or just my CV?', a:'Employers see your full skill portfolio — skills with proficiency levels, projects with descriptions, certifications, and your AI match score against their role. There is no traditional CV. This is by design: we want hiring based on demonstrated ability, not formatting.' },
+  { q:'How does the employer feedback system work?', a:'When an employer rejects a candidate, InternMate prompts them to score the candidate across 5 dimensions (portfolio quality, technical skill, etc.) and leave optional written feedback. This takes 30 seconds. Students receive a structured breakdown of scores plus improvement notes — something almost no other platform offers.' },
+  { q:'Can I cancel my subscription anytime?', a:'Yes — cancel anytime, no questions asked. Your data stays on your profile. If you cancel Pro, you move back to the Free plan but keep all the skills and projects you\'ve added.' },
+];
+
+let mySkills = [
+  { name:'React.js', level:'Advanced' }, { name:'Python', level:'Intermediate' },
+  { name:'UI/UX Design', level:'Intermediate' }, { name:'SQL', level:'Beginner' },
+  { name:'Node.js', level:'Intermediate' }, { name:'Figma', level:'Advanced' },
+];
+let myProjects = [
+  { name:'E-Commerce Dashboard', desc:'Full-stack dashboard for a UAE-based retailer with real-time inventory tracking and sales analytics.', skills:['React','Node.js','MongoDB'], url:'github.com/ahmed/ecom' },
+  { name:'AI Resume Parser', desc:'NLP-powered tool that extracts structured data from CVs and scores them against job descriptions using Python + FastAPI.', skills:['Python','NLTK','FastAPI'], url:'' },
+];
+let myCerts = [
+  { name:'Google Data Analytics Certificate', issuer:'Google', date:'2024-03' },
+  { name:'React – The Complete Guide', issuer:'Udemy', date:'2023-11' },
+];
+const AI_SUGGESTED_SKILLS = ['TypeScript','Docker','GraphQL','PyTorch','Tailwind CSS','Next.js'];
+
+// ═══════════ CORE ═══════════
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const nb = document.getElementById('nav-' + name);
+  if (nb) nb.classList.add('active');
+  window.scrollTo(0,0);
+  if (name === 'browse') renderJobs();
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'profile') renderProfile();
+  if (name === 'employer') renderEmployerPage();
+  if (name === 'pricing') renderFAQ();
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-backdrop').forEach(b => b.addEventListener('click', e => { if(e.target===b) b.classList.remove('open'); }));
+
+function notify(title, msg, type='success') {
+  const icons = { success:{ bg:'var(--green-light)', c:'var(--green)', i:'✓' }, error:{ bg:'var(--rose-light)', c:'var(--rose)', i:'✕' }, info:{ bg:'var(--amber-light)', c:'var(--amber)', i:'★' } };
+  const ic = icons[type] || icons.success;
+  const n = document.getElementById('notif');
+  document.getElementById('notifTitle').textContent = title;
+  document.getElementById('notifMsg').textContent = msg;
+  const icon = document.getElementById('notifIcon');
+  icon.textContent = ic.i; icon.style.background = ic.bg; icon.style.color = ic.c;
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 3800);
+}
+
+// ═══════════ AUTH ═══════════
+function handleLogin() { closeModal('loginModal'); notify('Logged in!', 'Welcome back, Ahmed 👋'); }
+function handleSignup() { closeModal('signupModal'); notify('Account created!', 'Welcome! Build your skill profile to get matched.'); setTimeout(() => showPage('profile'), 900); }
+function handleEmpSignup() { closeModal('empSignupModal'); notify('Employer account created!', 'Post your first role and access the talent pool.'); }
+
+// ═══════════ JOBS ═══════════
+function renderJobs(list) {
+  list = list || JOBS;
+  document.getElementById('jobCount').textContent = list.length;
+  document.getElementById('jobList').innerHTML = list.map(j => `
+    <div class="intern-card ${j.applied?'applied':''} ${j.featured?'featured':''}" onclick="openJobDetail(${j.id})">
+      ${j.featured ? `<div style="font-size:0.7rem;font-weight:700;color:var(--amber);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem;">⭐ Featured Role</div>` : ''}
+      <div style="display:flex;align-items:flex-start;gap:1rem;">
+        <div class="co-logo ${j.lc}" style="font-size:0.78rem;">${j.logo}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.2rem;">
+            <span style="font-weight:700;font-size:0.97rem;">${j.title}</span>
+            ${j.applied ? '<span class="pill tag-teal" style="font-size:0.68rem;">✓ Applied</span>' : ''}
+          </div>
+          <div style="color:var(--ink2);font-size:0.83rem;margin-bottom:0.65rem;">${j.company} &middot; ${j.loc} &middot; ${j.dur}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.35rem;">${j.skills.slice(0,4).map(s=>`<span class="tag">${s}</span>`).join('')}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div class="match-badge">⚡ ${j.match}%</div>
+          <div style="font-size:0.75rem;color:var(--ink3);margin-top:0.35rem;">AED ${j.pay.toLocaleString()}/mo</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterJobs() {
+  const s = document.getElementById('searchInput').value.toLowerCase();
+  const cat = document.getElementById('catFilter').value;
+  const loc = document.getElementById('locFilter').value;
+  const dur = document.getElementById('durFilter').value;
+  const minM = parseInt(document.getElementById('matchFilter').value) || 0;
+  renderJobs(JOBS.filter(j =>
+    (!s || j.title.toLowerCase().includes(s) || j.company.toLowerCase().includes(s) || j.skills.some(sk=>sk.toLowerCase().includes(s))) &&
+    (!cat || j.cat===cat) && (!loc || j.loc===loc) && (!dur || j.dur===dur) && j.match >= minM
+  ));
+}
+
+function openJobDetail(id) {
+  const j = JOBS.find(x=>x.id===id);
+  document.getElementById('jdTitle').textContent = j.title;
+  const missingCount = Math.max(0, 10 - Math.round(j.match / 10));
+  document.getElementById('jdBody').innerHTML = `
+    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+      <div class="co-logo ${j.lc}">${j.logo}</div>
+      <div style="flex:1;">
+        <div style="font-weight:700;">${j.company}</div>
+        <div style="color:var(--ink2);font-size:0.83rem;">${j.loc} &middot; ${j.dur} &middot; AED ${j.pay.toLocaleString()}/month</div>
+      </div>
+      <div class="match-badge">⚡ ${j.match}% Match</div>
+    </div>
+    <div style="background:var(--bg2);border-radius:var(--radius);padding:1rem;margin-bottom:1.25rem;">
+      <div style="font-size:0.78rem;font-weight:600;color:var(--ink2);margin-bottom:0.6rem;">Required Skills</div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">${j.skills.map(s=>`<span class="skill-chip"><span class="verified">✓</span>${s}</span>`).join('')}</div>
+    </div>
+    <div class="ai-card" style="margin-bottom:1.25rem;">
+      <div class="ai-pulse" style="margin-bottom:0.6rem;font-size:0.72rem;"><div class="ai-dot"></div>AI Match Analysis</div>
+      <div class="skill-meter-row"><div class="skill-meter-label">Skill Match</div><div class="skill-meter-bar"><div class="skill-meter-fill" style="width:${j.match}%;background:var(--teal);"></div></div><div class="skill-meter-pct" style="color:var(--teal);">${j.match}%</div></div>
+      <div class="skill-meter-row"><div class="skill-meter-label">Profile Quality</div><div class="skill-meter-bar"><div class="skill-meter-fill" style="width:87%;background:var(--amber);"></div></div><div class="skill-meter-pct" style="color:var(--amber);">87%</div></div>
+      <div class="skill-meter-row"><div class="skill-meter-label">Success Prob.</div><div class="skill-meter-bar"><div class="skill-meter-fill" style="width:${Math.round(j.match*0.9)}%;background:var(--violet);"></div></div><div class="skill-meter-pct" style="color:var(--violet);">${Math.round(j.match*0.9)}%</div></div>
+    </div>
+    <p style="color:var(--ink2);font-size:0.88rem;line-height:1.7;margin-bottom:1.5rem;">${j.desc}</p>
+    <div style="display:flex;gap:0.75rem;">
+      ${j.applied
+        ? `<button class="btn btn-md btn-outline-green" style="flex:1;" disabled>✓ Already Applied</button>`
+        : `<button class="btn btn-md btn-primary" style="flex:1;" onclick="openApply(${j.id})">Apply Now →</button>`}
+      <button class="btn btn-md btn-ghost" onclick="closeModal('jobDetailModal')">Close</button>
+    </div>
+  `;
+  openModal('jobDetailModal');
+}
+
+function openApply(id) {
+  const j = JOBS.find(x=>x.id===id);
+  closeModal('jobDetailModal');
+  document.getElementById('applyTitle').textContent = `Apply: ${j.title} at ${j.company}`;
+  document.getElementById('applyMatchPct').textContent = `⚡ ${j.match}% Match`;
+  document.getElementById('applyMatchText').textContent = `Your skills match approximately ${Math.round(j.match/10)} of 10 requirements.`;
+  document.getElementById('applySkills').innerHTML = mySkills.map(s=>`<span class="skill-chip"><span class="verified">✓</span>${s.name}</span>`).join('');
+  const gapEl = document.getElementById('applyGapWarning');
+  if (j.match < 85) {
+    gapEl.style.display = 'block';
+    gapEl.innerHTML = `⚡ <strong>AI Tip:</strong> Your match is ${j.match}%. Adding TypeScript or Docker to your profile could boost this to ~90%. You can still apply now.`;
+  } else { gapEl.style.display = 'none'; }
+  document.getElementById('applyModal').dataset.jid = id;
+  openModal('applyModal');
+}
+
+function submitApplication() {
+  const id = parseInt(document.getElementById('applyModal').dataset.jid);
+  const j = JOBS.find(x=>x.id===id);
+  if (j) j.applied = true;
+  closeModal('applyModal');
+  notify('Application submitted! ✓', `Applied to ${j.title} at ${j.company}. You'll hear back in ~5 days.`);
+  if (document.getElementById('page-browse').classList.contains('active')) renderJobs();
+}
+
+// ═══════════ PROFILE ═══════════
+function renderProfile() {
+  renderSkills(); renderProjects(); renderCerts(); renderAITab(); updateStrength();
+  // AI suggested skills
+  const sugg = document.querySelector('#aiSkillSuggestions div:last-child');
+  if (sugg) sugg.innerHTML = AI_SUGGESTED_SKILLS.filter(s=>!mySkills.find(sk=>sk.name===s)).slice(0,5).map(s=>
+    `<button class="btn btn-sm btn-ghost" onclick="quickAddSkill('${s}')">${s} +</button>`
+  ).join('');
+}
+
+function switchProfileTab(btn, id) {
+  document.querySelectorAll('#page-profile .tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  ['tab-info','tab-skills','tab-projects','tab-certs','tab-ai'].forEach(t=>{
+    const el=document.getElementById(t); if(el) el.style.display = t===id?'block':'none';
+  });
+  if (id === 'tab-ai') renderAITab();
+}
+
+function renderSkills() {
+  const lvlColor = { Advanced:'tag-teal', Intermediate:'tag-amber', Beginner:'' };
+  document.getElementById('skillsList').innerHTML = mySkills.map((s,i)=>`
+    <div class="skill-chip">
+      <span class="verified">✓</span>${s.name}
+      <span class="pill ${lvlColor[s.level]}" style="font-size:0.65rem;padding:0.1rem 0.45rem;">${s.level}</span>
+      <span style="cursor:pointer;color:var(--ink3);margin-left:2px;font-size:0.8rem;" onclick="removeSkill(${i})">✕</span>
+    </div>`).join('');
+}
+
+function addSkill() {
+  const n = document.getElementById('newSkill').value.trim();
+  const l = document.getElementById('skillLevel').value;
+  if (!n) return;
+  mySkills.push({name:n,level:l});
+  document.getElementById('newSkill').value = '';
+  renderSkills(); updateStrength();
+  notify('Skill added!', `"${n}" added at ${l} level.`);
+}
+
+function quickAddSkill(name) {
+  mySkills.push({name,level:'Intermediate'});
+  renderSkills(); updateStrength();
+  renderProfile();
+  notify('Skill added!', `"${name}" added to your profile.`);
+}
+
+function removeSkill(i) { mySkills.splice(i,1); renderSkills(); updateStrength(); }
+
+function renderProjects() {
+  document.getElementById('projectList').innerHTML = myProjects.map((p,i)=>`
+    <div class="card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0.5rem;">
+        <div style="font-weight:700;font-size:0.95rem;">📁 ${p.name}</div>
+        <button class="btn btn-sm btn-outline-danger" onclick="removeProject(${i})">Remove</button>
+      </div>
+      <p style="color:var(--ink2);font-size:0.85rem;line-height:1.65;margin-bottom:0.75rem;">${p.desc}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;">
+        ${p.skills.map(s=>`<span class="tag">${s}</span>`).join('')}
+        ${p.url?`<a href="#" style="color:var(--amber);font-size:0.78rem;margin-left:0.5rem;font-weight:600;">↗ ${p.url}</a>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function removeProject(i) { myProjects.splice(i,1); renderProjects(); updateStrength(); }
+
+function addProject() {
+  const n = document.getElementById('pName').value.trim();
+  const d = document.getElementById('pDesc').value.trim();
+  const s = document.getElementById('pSkills').value.split(',').map(x=>x.trim()).filter(Boolean);
+  const u = document.getElementById('pUrl').value.trim();
+  if (!n||!d) return notify('Missing info','Fill in project name and description.','error');
+  myProjects.push({name:n,desc:d,skills:s,url:u});
+  ['pName','pDesc','pSkills','pUrl'].forEach(id=>document.getElementById(id).value='');
+  closeModal('addProjectModal'); renderProjects(); updateStrength();
+  notify('Project added!', `"${n}" is now on your portfolio.`);
+}
+
+function renderCerts() {
+  document.getElementById('certList').innerHTML = myCerts.map((c,i)=>`
+    <div class="card" style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <div style="font-size:1.5rem;">🎓</div>
+        <div><div style="font-weight:600;font-size:0.9rem;">${c.name}</div><div style="color:var(--ink3);font-size:0.78rem;">${c.issuer} · ${c.date}</div></div>
+      </div>
+      <button class="btn btn-sm btn-outline-danger" onclick="removeCert(${i})">Remove</button>
+    </div>`).join('');
+}
+
+function removeCert(i) { myCerts.splice(i,1); renderCerts(); updateStrength(); }
+
+function addCert() {
+  const n=document.getElementById('certName').value.trim();
+  const iss=document.getElementById('certIssuer').value.trim();
+  const d=document.getElementById('certDate').value;
+  if(!n||!iss) return notify('Missing info','Fill in certificate name and issuer.','error');
+  myCerts.push({name:n,issuer:iss,date:d});
+  ['certName','certIssuer','certDate'].forEach(id=>document.getElementById(id).value='');
+  closeModal('addCertModal'); renderCerts(); updateStrength();
+  notify('Certificate added!',`"${n}" added to your profile.`);
+}
+
+function renderAITab() {
+  // Career paths
+  const cpEl = document.getElementById('careerPaths');
+  if (cpEl) cpEl.innerHTML = CAREER_PATHS.map(p=>`
+    <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem;">
+      <div style="width:10px;height:10px;border-radius:50%;background:${p.color};flex-shrink:0;"></div>
+      <div>
+        <div style="font-size:0.85rem;font-weight:700;">${p.title} <span style="color:${p.color};font-weight:600;">${p.match}</span></div>
+        <div style="font-size:0.75rem;color:var(--ink2);">${p.desc}</div>
+      </div>
+    </div>`).join('');
+
+  // Gap analysis
+  const gaEl = document.getElementById('gapAnalysis');
+  if (gaEl) gaEl.innerHTML = GAP_ANALYSIS.map(g=>`
+    <div style="margin-bottom:1rem;padding:1rem;background:var(--bg2);border-radius:var(--radius);border:1px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
+        <span style="font-size:0.85rem;font-weight:600;">${g.role}</span>
+        <span class="match-badge" style="font-size:0.72rem;">⚡ ${g.match}%</span>
+      </div>
+      <div style="font-size:0.77rem;color:var(--ink2);">
+        <span style="color:var(--teal);font-weight:600;">✓ Strong: </span>${g.strong.join(', ')}
+        ${g.gaps.length ? `<br><span style="color:var(--coral);font-weight:600;">△ Gaps: </span>${g.gaps.map(gp=>`<span style="background:var(--coral-light);color:var(--coral);border-radius:4px;padding:1px 6px;font-size:0.72rem;">${gp}</span>`).join(' ')}` : ''}
+      </div>
+    </div>`).join('');
+
+  // Next steps
+  const nsEl = document.getElementById('nextSteps');
+  if (nsEl) nsEl.innerHTML = NEXT_STEPS.map(ns=>`
+    <div style="display:flex;align-items:flex-start;gap:0.75rem;padding:0.9rem;background:var(--bg2);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:0.6rem;">
+      <div style="font-size:1.2rem;margin-top:2px;">${ns.icon}</div>
+      <div style="flex:1;">
+        <div style="font-size:0.87rem;font-weight:700;margin-bottom:0.2rem;">${ns.title}</div>
+        <div style="font-size:0.8rem;color:var(--ink2);">${ns.desc}</div>
+      </div>
+      <span class="pill ${ns.tagClass}" style="font-size:0.68rem;padding:0.2rem 0.6rem;white-space:nowrap;">${ns.tag}</span>
+    </div>`).join('');
+}
+
+function updateStrength() {
+  const pct = Math.min(100, 25 + Math.min(mySkills.length*7,28) + Math.min(myProjects.length*12,24) + Math.min(myCerts.length*8,16) + 7);
+  document.getElementById('strengthBar').style.width = pct + '%';
+  document.getElementById('strengthPct').textContent = pct + '%';
+}
+
+function updateAvatar() {
+  const f=document.getElementById('firstName').value; const l=document.getElementById('lastName').value;
+  document.getElementById('profileAvatar').textContent = ((f[0]||'')+(l[0]||'')).toUpperCase();
+}
+
+function saveProfile() { notify('Profile saved!','Your skill profile is live and visible to employers.'); }
+
+// ═══════════ DASHBOARD ═══════════
+function renderDashboard() {
+  const statusCfg = {
+    interview:{ label:'Interview Scheduled', bg:'var(--teal-light)', border:'#99f6e4', c:'#0f766e' },
+    reviewing:{ label:'Under Review', bg:'var(--amber-light)', border:'#fde68a', c:'var(--amber)' },
+    rejected:{ label:'Not Selected', bg:'var(--rose-light)', border:'#fecdd3', c:'var(--rose)' },
+    applied:{ label:'Submitted', bg:'var(--violet-light)', border:'#ddd6fe', c:'var(--violet)' },
+  };
+  document.getElementById('appTracker').innerHTML = APPS.map(a=>{
+    const s=statusCfg[a.status];
+    return `<div class="card" style="padding:1rem;">
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <div class="co-logo ${a.lc}" style="width:38px;height:38px;font-size:0.72rem;">${a.logo}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:600;font-size:0.87rem;">${a.role}</div>
+          <div style="color:var(--ink2);font-size:0.78rem;">${a.company} · ${a.date}</div>
+        </div>
+        <span style="background:${s.bg};border:1px solid ${s.border};color:${s.c};border-radius:100px;padding:0.2rem 0.7rem;font-size:0.72rem;font-weight:700;white-space:nowrap;">${s.label}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // AI Recommendations
+  document.getElementById('aiRecos').innerHTML = AI_RECOS.map(r=>{
+    const j = JOBS.find(x=>x.id===r.job);
+    return `<div class="ai-card" style="padding:1rem;">
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+        <div class="co-logo ${j.lc}" style="width:36px;height:36px;font-size:0.72rem;flex-shrink:0;">${j.logo}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.2rem;">
+            <span style="font-weight:700;font-size:0.87rem;">${j.title}</span>
+            <span class="match-badge" style="font-size:0.7rem;">⚡ ${r.match}%</span>
+          </div>
+          <div style="font-size:0.77rem;color:var(--ink2);line-height:1.5;margin-bottom:0.5rem;">${r.reason}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:0.72rem;color:var(--ink3);">${r.urgency}</span>
+            <button class="btn btn-sm btn-primary" style="font-size:0.75rem;padding:0.25rem 0.75rem;" onclick="openJobDetail(${j.id})">View Role →</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Feedback cards
+  document.getElementById('feedbackCards').innerHTML = FEEDBACK_DATA.map((f,fi)=>`
+    <div class="feedback-card">
+      <div style="display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1rem;">
+        <div class="co-logo ${f.lc}" style="width:38px;height:38px;font-size:0.72rem;">${f.logo}</div>
+        <div>
+          <div style="font-weight:700;font-size:0.87rem;">${f.role} @ ${f.company}</div>
+          <div style="background:var(--rose-light);color:var(--rose);border-radius:100px;padding:0.1rem 0.6rem;font-size:0.7rem;font-weight:700;display:inline-block;margin-top:0.25rem;">${f.result}</div>
+        </div>
+      </div>
+      <!-- Score breakdown -->
+      <div style="margin-bottom:0.85rem;">
+        <div style="font-size:0.75rem;font-weight:600;color:var(--ink2);margin-bottom:0.5rem;">Employer Scores:</div>
+        ${Object.entries(f.scores).map(([k,v])=>`
+          <div class="skill-meter-row">
+            <div class="skill-meter-label" style="font-size:0.73rem;">${k}</div>
+            <div class="skill-meter-bar"><div class="skill-meter-fill" style="width:${v}%;background:${v>=75?'var(--teal)':v>=55?'var(--amber)':'var(--coral)'};"></div></div>
+            <div class="skill-meter-pct" style="color:${v>=75?'var(--teal)':v>=55?'var(--amber)':'var(--coral)'};">${v}%</div>
+          </div>`).join('')}
+      </div>
+      <!-- Strengths + Improvements -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.85rem;">
+        <div>
+          <div style="font-size:0.72rem;font-weight:700;color:var(--teal);margin-bottom:0.4rem;">✓ Strengths</div>
+          ${f.strengths.map(s=>`<div style="font-size:0.77rem;color:var(--ink2);margin-bottom:0.25rem;">· ${s}</div>`).join('')}
+        </div>
+        <div>
+          <div style="font-size:0.72rem;font-weight:700;color:var(--coral);margin-bottom:0.4rem;">△ Improve</div>
+          ${f.improvements.map(s=>`<div style="font-size:0.77rem;color:var(--ink2);margin-bottom:0.25rem;">· ${s}</div>`).join('')}
+        </div>
+      </div>
+      <!-- Note -->
+      <div style="background:var(--bg2);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:0.65rem 0.85rem;font-size:0.8rem;color:var(--ink2);line-height:1.6;margin-bottom:0.65rem;">
+        <strong style="color:var(--ink);">Employer note:</strong> ${f.note}
+      </div>
+      <!-- AI coach tip -->
+      <div style="background:var(--violet-light);border:1px solid #ddd6fe;border-radius:var(--radius);padding:0.65rem 0.85rem;font-size:0.78rem;color:var(--violet);line-height:1.6;">
+        <strong>🤖 AI Coach:</strong> ${f.coach_tip}
+      </div>
+    </div>`).join('');
+
+  // Views chart
+  const views = [4,6,3,8,12,7,9];
+  const mx = Math.max(...views);
+  document.getElementById('viewChart').innerHTML = views.map(v=>`
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+      <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
+        <div style="width:100%;height:${Math.round((v/mx)*70)}px;background:var(--amber);border-radius:4px 4px 0 0;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7"></div>
+      </div>
+      <div style="font-size:0.63rem;color:var(--ink3);margin-top:3px;">${v}</div>
+    </div>`).join('');
+}
+
+// ═══════════ EMPLOYER PAGE ═══════════
+function renderEmployerPage() {
+  document.getElementById('empCandidates').innerHTML = [
+    {n:'Ahmed Hassan',uni:'AUS',match:96,skills:['React','Python','SQL'],av:'AH',avc:'av-amber'},
+    {n:'Sara Al-Mansoori',uni:'UAEU',match:91,skills:['Figma','UX','Research'],av:'SA',avc:'av-teal'},
+    {n:'Mohammed Khalid',uni:'AUD',match:88,skills:['ML','Python','PyTorch'],av:'MK',avc:'av-coral'},
+  ].map(c=>`
+    <div style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem;background:var(--bg2);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:0.6rem;">
+      <div class="avatar av-sm ${c.avc}">${c.av}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:700;font-size:0.85rem;">${c.n}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.25rem;">${c.skills.map(s=>`<span class="tag" style="font-size:0.68rem;">${s}</span>`).join('')}</div>
+      </div>
+      <div class="match-badge" style="font-size:0.72rem;">⚡${c.match}%</div>
+    </div>`).join('');
+
+  // Feedback form preview
+  const fbFields = ['Portfolio Quality','Technical Skill','Communication','Relevant Experience','Cultural Fit'];
+  document.getElementById('empFeedbackForm').innerHTML = fbFields.map(f=>`
+    <div style="margin-bottom:0.6rem;">
+      <div style="font-size:0.78rem;color:var(--ink2);margin-bottom:0.25rem;">${f}</div>
+      <input type="range" min="0" max="100" value="${Math.floor(50+Math.random()*40)}" style="padding:0;height:4px;width:100%;">
+    </div>`).join('') + `<textarea placeholder="Optional written note to the candidate..." style="height:70px;font-size:0.82rem;margin-top:0.5rem;"></textarea>
+    <button class="btn btn-sm btn-teal" style="margin-top:0.75rem;width:100%;" onclick="notify('Feedback sent!','Ahmed received your structured feedback in their dashboard.')">Send Feedback →</button>`;
+
+  // Preview of what student sees
+  document.getElementById('empFeedbackPreview').innerHTML = `
+    <div style="background:var(--bg2);border-radius:var(--radius);padding:1rem;border:1px solid var(--border);">
+      <div style="font-size:0.72rem;font-weight:700;color:var(--rose);margin-bottom:0.6rem;">Not Selected · Careem</div>
+      ${fbFields.map(f=>`
+        <div class="skill-meter-row" style="margin-bottom:0.45rem;">
+          <div class="skill-meter-label" style="font-size:0.7rem;width:100px;">${f}</div>
+          <div class="skill-meter-bar"><div class="skill-meter-fill" style="width:${Math.floor(55+Math.random()*35)}%;background:var(--amber);"></div></div>
+        </div>`).join('')}
+      <div style="background:var(--violet-light);border-radius:6px;padding:0.5rem 0.65rem;font-size:0.75rem;color:var(--violet);margin-top:0.6rem;">🤖 AI turns employer scores into actionable coaching advice</div>
+    </div>`;
+}
+
+function postJob() { notify('Role posted! 🎉','Your internship is now live. AI matching is active for all candidates.'); }
+
+// ═══════════ PRICING ═══════════
+let pricingPeriod = 'monthly';
+function setPricingPeriod(p) {
+  pricingPeriod = p;
+  const monthlyBtn = document.getElementById('toggleMonthly');
+  const annualBtn = document.getElementById('toggleAnnual');
+  const discount = 0.75;
+  if (p === 'monthly') {
+    monthlyBtn.style.background='var(--surface)'; monthlyBtn.style.boxShadow='var(--shadow)';
+    annualBtn.style.background='transparent'; annualBtn.style.boxShadow='none';
+    document.getElementById('proPriceMonthly').textContent='AED 49';
+    document.getElementById('proPriceSub').textContent='per month';
+    document.getElementById('elitePriceMonthly').textContent='AED 99';
+    document.getElementById('elitePriceSub').textContent='per month';
+    document.getElementById('bizPriceMonthly').textContent='AED 599';
+    document.getElementById('bizPriceSub').textContent='per month';
+  } else {
+    annualBtn.style.background='var(--surface)'; annualBtn.style.boxShadow='var(--shadow)';
+    monthlyBtn.style.background='transparent'; monthlyBtn.style.boxShadow='none';
+    document.getElementById('proPriceMonthly').textContent='AED 37';
+    document.getElementById('proPriceSub').textContent='per month, billed annually';
+    document.getElementById('elitePriceMonthly').textContent='AED 74';
+    document.getElementById('elitePriceSub').textContent='per month, billed annually';
+    document.getElementById('bizPriceMonthly').textContent='AED 449';
+    document.getElementById('bizPriceSub').textContent='per month, billed annually';
+  }
+}
+
+function renderFAQ() {
+  document.getElementById('faqList').innerHTML = FAQS.map((f,i)=>`
+    <div class="faq-item" onclick="toggleFAQ(${i})">
+      <div class="faq-q">${f.q}<span class="faq-arrow">▾</span></div>
+      <div class="faq-a">${f.a}</div>
+    </div>`).join('');
+}
+
+function toggleFAQ(i) {
+  const items = document.querySelectorAll('.faq-item');
+  items[i].classList.toggle('open');
+}
+
+// ═══════════ INIT ═══════════
+renderJobs(); renderDashboard(); renderEmployerPage(); renderFAQ(); updateStrength();
+</script>
+</body>
+</html>
